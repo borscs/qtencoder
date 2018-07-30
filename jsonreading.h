@@ -28,7 +28,7 @@ public:
     
     void reversToMap();
     QString jsonRead();
-    QString backMesseg(const QString &keys);
+    void backMesseg(const QString &keys);
     QVariantMap loadJson(const QString &path);
 
  

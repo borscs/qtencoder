@@ -1,6 +1,7 @@
 #include "jsonreading.h"
 #include <QJsonDocument>
 #include <QMap>
+#include <QException>
 
 QVariantMap JsonReading::getMapNormal() const
 {
@@ -56,14 +57,26 @@ void JsonReading::setMapRevers(const QVariantMap &value)
 
 void JsonReading::reversToMap()
 {
-    QVariant assist;
-    QString value;
-    QVariant key;
-    for(auto it=mapNormal.begin();it!=mapNormal.end();it++)
+    QVariantMap helperMap = getMapNormal();
+    QVariantMap *insertMap = new QVariantMap();
+
+    foreach(const QString& key, helperMap.keys())
     {
-        value=it.value().toString();
-        key = it.key();
+        QVariant jsonValue = helperMap.value(key);
+        insertMap->insert(jsonValue.toString(),key);
     }
+    //qDebug() << "swapped";
+    try
+    {
+        setMapRevers(*insertMap);
+    }
+    catch (QException &exception)
+    {
+        qDebug() << exception.what();
+    }
+
+    delete insertMap;
+
 }
 
 JsonReading::JsonReading()
@@ -76,17 +89,20 @@ JsonReading::~JsonReading()
     
 }
 
-QString JsonReading::backMesseg(const QString &keys)
+void JsonReading::backMesseg(const QString &keys)
 {
     QVariantMap map=getMapNormal();
     QString value;
-    for(auto it=map.begin();it!=map.end();it++)
+    for(qint32 i=0;i<keys.length();i++)
     {
-        if(keys==it.key())
-        {
-            value = it.value().toString();
+        for(auto it=map.begin();it!=map.end();it++)
+         {
+            if(keys[i]==it.key())
+            {
+                value += it.value().toString();
+            }
         }
     }
-    return value;
+    qDebug() << value;
 
 }

@@ -8,3 +8,5 @@ Makefile
 *.debug
 .idea/
 cmake-build-debug/
+
+*.autosave

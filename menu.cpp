@@ -4,3 +4,9 @@ Menu::Menu()
 {
 
 }
+
+void Menu::Cycle()
+{
+
+
+}
