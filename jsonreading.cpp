@@ -1,16 +1,31 @@
 #include "jsonreading.h"
+
 #include <QJsonDocument>
-#include <QMap>
 #include <QException>
+#include <QDebug>
+#include <QFile>
+#include <QJsonParseError>
+#include <QJsonObject>
+
+
+JsonReading::JsonReading()
+{
+}
+
+JsonReading::~JsonReading()
+{
+
+}
 
 QVariantMap JsonReading::getMapNormal() const
 {
     return mapNormal;
 }
 
-void JsonReading::setMapNormal(const QVariantMap &value)
+void JsonReading::setMapNormal(const QVariantMap &value)   ///setmapss elnevezés
 {
     mapNormal = value;
+    swichMap();
 }
 
 QVariantMap JsonReading::loadJson(const QString &path)
@@ -30,17 +45,14 @@ QVariantMap JsonReading::loadJson(const QString &path)
         throw error.errorString();
     }
 
-    QVariant assist = document.toVariant();
-    return assist.toMap();
+    return  document.toVariant().toMap();
 }
 
-QString JsonReading::jsonRead()
+QString JsonReading::jsonRead() // This should be in the menu handler class
 {
-    cout<<"pleas json file: "<<endl;
-    std::string str;
-    std::getline(std::cin, str);
-    QString path(str.c_str());
-
+    qDebug()<<"pleas json file: "<<endl;
+    QTextStream qtin(stdin);
+    QString path = qtin.readLine();
     return path;
 }
 
@@ -55,14 +67,14 @@ void JsonReading::setMapRevers(const QVariantMap &value)
     mapRevers = value;
 }
 
-void JsonReading::reversToMap()
+void JsonReading::swichMap()   //osztály változo használat, műs név swich to revers ...., for()
 {
-    QVariantMap helperMap = getMapNormal();
+
     QVariantMap *insertMap = new QVariantMap();
 
-    foreach(const QString& key, helperMap.keys())
+    foreach(const QString& key, getMapNormal().keys())
     {
-        QVariant jsonValue = helperMap.value(key);
+        QVariant jsonValue = getMapNormal().value(key);
         insertMap->insert(jsonValue.toString(),key);
     }
     //qDebug() << "swapped";
@@ -79,30 +91,3 @@ void JsonReading::reversToMap()
 
 }
 
-JsonReading::JsonReading()
-{
-    
-}
-
-JsonReading::~JsonReading()
-{
-    
-}
-
-void JsonReading::backMesseg(const QString &keys)
-{
-    QVariantMap map=getMapNormal();
-    QString value;
-    for(qint32 i=0;i<keys.length();i++)
-    {
-        for(auto it=map.begin();it!=map.end();it++)
-         {
-            if(keys[i]==it.key())
-            {
-                value += it.value().toString();
-            }
-        }
-    }
-    qDebug() << value;
-
-}

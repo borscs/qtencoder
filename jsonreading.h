@@ -1,23 +1,13 @@
-#ifndef JSON_H
-#define JSON_H
-#include <QVariant>
+#pragma once
+
+
 #include <QString>
-#include <stdlib.h>
-#include <iostream>
-#include <QFile>
-#include <QJsonParseError>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <ostream>
-#include <QtDebug>
-#include <QMap>
+#include <QVariantMap>
 
 using namespace std;
 
 class JsonReading
-{
-    QVariantMap mapNormal;
-    QVariantMap mapRevers;
+{  // please set private those functions which are only called from the class
 public:
     JsonReading();
     ~JsonReading();
@@ -25,13 +15,16 @@ public:
     void setMapNormal(const QVariantMap &value);
     QVariantMap getMapRevers() const;
     void setMapRevers(const QVariantMap &value);
-    
-    void reversToMap();
+
     QString jsonRead();
     void backMesseg(const QString &keys);
     QVariantMap loadJson(const QString &path);
 
+protected:
+    void swichMap();
+
+private:
+    QVariantMap mapNormal;
+    QVariantMap mapRevers;
  
 };
-
-#endif // JSON_H
