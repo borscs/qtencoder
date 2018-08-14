@@ -11,7 +11,6 @@
 JsonReading::JsonReading()
 {
 }
-
 JsonReading::~JsonReading()
 {
 
@@ -22,10 +21,10 @@ QVariantMap JsonReading::getMapNormal() const
     return mapNormal;
 }
 
-void JsonReading::setMapNormal(const QVariantMap &value)   ///setmapss elnevezés
+void JsonReading::setMaps(const QVariantMap &value)
 {
     mapNormal = value;
-    swichMap();
+    reverMap();
 }
 
 QVariantMap JsonReading::loadJson(const QString &path)
@@ -48,13 +47,6 @@ QVariantMap JsonReading::loadJson(const QString &path)
     return  document.toVariant().toMap();
 }
 
-QString JsonReading::jsonRead() // This should be in the menu handler class
-{
-    qDebug()<<"pleas json file: "<<endl;
-    QTextStream qtin(stdin);
-    QString path = qtin.readLine();
-    return path;
-}
 
 
 QVariantMap JsonReading::getMapRevers() const
@@ -67,8 +59,7 @@ void JsonReading::setMapRevers(const QVariantMap &value)
     mapRevers = value;
 }
 
-void JsonReading::swichMap()   //osztály változo használat, műs név swich to revers ...., for()
-{
+void JsonReading::reverMap(){
 
     QVariantMap *insertMap = new QVariantMap();
 
@@ -77,7 +68,6 @@ void JsonReading::swichMap()   //osztály változo használat, műs név swich t
         QVariant jsonValue = getMapNormal().value(key);
         insertMap->insert(jsonValue.toString(),key);
     }
-    //qDebug() << "swapped";
     try
     {
         setMapRevers(*insertMap);
