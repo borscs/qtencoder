@@ -32,7 +32,7 @@ void Menu::mainMenu(const JsonReading &maps)
     Encoder encoder;
 
     do{
-        QString inputFromUser =  userInput();
+        QString inputFromUser =  userInput().toLower();
         int offset;
 
         if (inputFromUser.startsWith("encode:")) {
